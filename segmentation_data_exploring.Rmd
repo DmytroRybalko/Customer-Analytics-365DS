@@ -1,0 +1,16 @@
+---
+title: "Exploring Segmentation Data"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+# Load segmentation data:
+```{r cars}
+df0 <- read.csv('data/raw/segmentation_data.csv')
+```
+
+
