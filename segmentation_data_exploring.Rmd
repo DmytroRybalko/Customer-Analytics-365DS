@@ -5,12 +5,75 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
 library(tidyverse)
+library(corrplot)
+library(cluster)
+library(factoextra)
 ```
 
 # Load segmentation data:
 ```{r cars}
 df0 <- read.csv('data/raw/segmentation_data.csv')
+df0
 ```
+# Explore data
+```{r}
+glimpse(df0)
+```
+# Describe our data
+```{r}
+summary(df0[,-1])
+```
+```{r}
+#by(df0, df0[,2:7], summary)
+```
+# Correlation Estimate
+```{r}
+(correlation <- cor(df0[,2:8]))
+```
+# Visualize correlation matrix
+```{r}
+corrplot(correlation, method = "number", bg = 'grey')
+```
+![Visualize correlation matrix using correlogram](http://www.sthda.com/english/wiki/visualize-correlation-matrix-using-correlogram)
+
+# Hierarchical Clustering for Segmentation and Customer Analytics
+  
+### 1) Make standardatize data:
+```{r}
+df0_scaled <- scale(df0[,2:8])
+summary(df0_scaled)
+```
+### 2) Compute clusters similarity by dist()
+```{r}
+df0_dist <- dist(df0_scaled, method = "euclidian")
+```
+### 3) Linkage  
+The linkage function takes the distance information, returned by the function dist(),
+and groups pairs of objects into clusters based on their similarity. Next, these newly
+formed clusters are linked to each other to create bigger clusters.
+```{r}
+df_linked <- hclust(d = df0_dist, method = "ward.D2")
+```
+### 4) Dendrogram
+```{r}
+plot(df_linked, cex = .8)
+```
+```{r}
+fviz_dend(df_linked, k = 4)
+```
+
+### Questions:  
+1) how to choose optimal number of cluster automatically?
+2) take care about hierarchical clusters in R!!!  
+
+# K-means Clustering
+
+1) Execute kmeans for number of clusters from 1 to 10
+```{r}
+
+```
+
 
 
